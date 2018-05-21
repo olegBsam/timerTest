@@ -1,0 +1,16 @@
+[WINDOWS]
+count=2
+[FILE1]
+name=TimersControl.lg
+PositionX=16
+PositionY=6
+SizeX=605
+SizeY=581
+ShowType=1
+[FILE2]
+name=Main.lg
+PositionX=635
+PositionY=14
+SizeX=997
+SizeY=567
+ShowType=1

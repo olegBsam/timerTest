@@ -1,0 +1,215 @@
+Программа Main
+Начало
+  Константы
+    Начало
+    Конец
+  Переменные
+    Начало
+    Конец
+  Если (!TimerControl_TmrIsExist(1))
+  {
+    рв500 = 9999.00
+    TimerControl_CreateTmr(1, 60.0000)
+    TimerControl_StartTmr(1)
+  }
+  
+  Если TimerControl_IsOverTmr(1)
+  {
+    рв500 = 5555.00
+    Если (!TimerControl_TmrIsExist(2))
+    {
+      TimerControl_CreateTmr(2, 30.0000)
+      TimerControl_StartTmr(2)
+    }
+    
+    Если TimerControl_IsOverTmr(2)
+    {
+      TimerControl_DisposeTmr(1)
+      TimerControl_DisposeTmr(2)
+    }
+    
+  }
+  
+Конец
+
+Функция TimerControl_TmrIsExist
+  Входные_Переменные
+    Начало
+      Цел16 tmrId
+    Конец
+  Выходные_Переменные
+    Начало
+      Лог tmrIsExist
+    Конец
+Начало
+  Константы
+    Начало
+    Конец
+  Переменные
+    Начало
+    Конец
+  tmrIsExist = 0
+  Для iTmrId[1...50], iTmrThreshold[950...999]
+  {
+    Если (tmrId = iTmrId)
+    {
+      Если (пв[iTmrThreshold] # 0.000000)
+      {
+        tmrIsExist = 1
+      }
+      
+      Прервать
+    }
+    
+  }
+  
+Конец
+
+Функция TimerControl_IsOverTmr
+  Входные_Переменные
+    Начало
+      Цел16 tmrId
+    Конец
+  Выходные_Переменные
+    Начало
+      Лог isOverTmr
+    Конец
+Начало
+  Константы
+    Начало
+    Конец
+  Переменные
+    Начало
+    Конец
+  isOverTmr = 0
+  Для iTmrId[1...50], iTmrThreshold[950...999]
+  {
+    Если (tmrId = iTmrId)
+    {
+      Если ((пв[iTmrThreshold] <= тс[iTmrId]) & (пв[iTmrThreshold] # 0.000000))
+      {
+        Выкл тс[iTmrId]
+        isOverTmr = 1
+      }
+      
+      Прервать
+    }
+    
+  }
+  
+Конец
+
+Функция TimerControl_CreateTmr
+  Входные_Переменные
+    Начало
+      Цел16 tmrId
+      Вещ32 threshold
+    Конец
+  Выходные_Переменные
+    Начало
+      Лог tmrWasCreated
+    Конец
+Начало
+  Константы
+    Начало
+    Конец
+  Переменные
+    Начало
+    Конец
+  tmrWasCreated = 0
+  Для iTmrId[1...50], iTmrThreshold[950...999]
+  {
+    Если (tmrId = iTmrId)
+    {
+      Если (пв[iTmrThreshold] = 0.000000)
+      {
+        пв[iTmrThreshold] = (-threshold)
+        тс[iTmrId] = 0.000000
+        tmrWasCreated = 1
+      }
+      
+      Прервать
+    }
+    
+  }
+  
+Конец
+
+Функция TimerControl_DisposeTmr
+  Входные_Переменные
+    Начало
+      Цел16 tmrId
+    Конец
+  Выходные_Переменные
+    Начало
+      Лог tmrWasDisposed
+    Конец
+Начало
+  Константы
+    Начало
+    Конец
+  Переменные
+    Начало
+    Конец
+  tmrWasDisposed = 0
+  Для iTmrId[1...50], iTmrThreshold[950...999]
+  {
+    Если (tmrId = iTmrId)
+    {
+      Если (пв[iTmrThreshold] # 0.000000)
+      {
+        tmrWasDisposed = 1
+        Выкл тс[iTmrId]
+        тс[iTmrId] = 0.000000
+        пв[iTmrThreshold] = 0.000000
+      }
+      
+      Прервать
+    }
+    
+  }
+  
+Конец
+
+Функция TimerControl_StartTmr
+  Входные_Переменные
+    Начало
+      Цел16 tmrId
+    Конец
+  Выходные_Переменные
+    Начало
+      Лог tmrIsExist
+      Лог tmrWasStopedBeforeStart
+    Конец
+Начало
+  Константы
+    Начало
+    Конец
+  Переменные
+    Начало
+    Конец
+  tmrIsExist = 0
+  tmrWasStopedBeforeStart = 0
+  Для iTmrId[1...50], iTmrThreshold[950...999]
+  {
+    Если (tmrId = iTmrId)
+    {
+      Если (пв[iTmrThreshold] # 0.000000)
+      {
+        tmrIsExist = 1
+        Если (пв[iTmrThreshold] < 0.000000)
+        {
+          tmrWasStopedBeforeStart = 1
+          пв[iTmrThreshold] = (0.000000 - пв[iTmrThreshold])
+          Вкл тс[iTmrId]
+        }
+        
+      }
+      
+      Прервать
+    }
+    
+  }
+  
+Конец
+

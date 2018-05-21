@@ -1,0 +1,24 @@
+ÏĞÎÃĞÀÌÌÀ Main
+	ÍÀ×ÀËÎ
+	
+		åñëè (!TimerControl_TmrIsExist(1)){
+			ğâ500 = 9999
+			TimerControl_CreateTmr(1, 60)
+			TimerControl_StartTmr(1)
+		}
+		
+		ÅÑËÈ (TimerControl_IsOverTmr(1)){
+			ğâ500 = 5555
+			
+			åñëè (!TimerControl_TmrIsExist(2)){
+				TimerControl_CreateTmr(2, 30)
+				TimerControl_StartTmr(2)
+			}
+			åñëè (TimerControl_IsOverTmr(2)){
+				TimerControl_DisposeTmr(1)
+				TimerControl_DisposeTmr(2)
+			}
+		}
+		
+	
+	ÊÎÍÅÖ

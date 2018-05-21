@@ -1,0 +1,181 @@
+тсмйжхъ TimerControl_TmrIsExist
+
+	бундмше_оепелеммше
+		мювюкн
+			жек16 tmrId
+		йнмеж
+		
+	бшундмше_оепелеммше
+		мювюкн
+			кнц tmrIsExist
+		йнмеж
+		
+	мювюкн
+		tmrIsExist = FALSE
+		
+		дкъ iTmrId[1...50],
+			iTmrThreshold[950...999]
+		{
+			еякх (tmrId = iTmrId){
+				еякх (об[iTmrThreshold] # TIMER_IS_NOT_INIT){
+					tmrIsExist = TRUE
+				}
+				опепбюрэ
+			}
+		}
+	йнмеж
+
+тсмйжхъ TimerControl_IsOverTmr
+
+	бундмше_оепелеммше
+		мювюкн
+			жек16 tmrId
+		йнмеж
+		
+	бшундмше_оепелеммше
+		мювюкн
+			кнц isOverTmr
+		йнмеж
+		
+	мювюкн
+		isOverTmr = FALSE
+		дкъ iTmrId[1...50],
+			iTmrThreshold[950...999]
+		{
+			еякх (tmrId = iTmrId){
+				еякх ((ря[iTmrId] >= об[iTmrThreshold]) & (об[iTmrThreshold] # TIMER_IS_NOT_INIT)){
+					БШЙК ря[iTmrId]
+					isOverTmr = TRUE
+				}
+				опепбюрэ
+			}
+		}
+	йнмеж
+	
+тсмйжхъ TimerControl_CreateTmr
+
+	бундмше_оепелеммше
+		мювюкн
+			жек16 tmrId
+			беы32 threshold
+		йнмеж
+		
+	бшундмше_оепелеммше
+		мювюкн
+			кнц tmrWasCreated
+		йнмеж
+		
+	мювюкн
+		tmrWasCreated = FALSE
+		
+		дкъ iTmrId[1...50],
+			iTmrThreshold[950...999]
+		{
+			еякх (tmrId = iTmrId){
+				еякх (об[iTmrThreshold] = TIMER_IS_NOT_INIT){
+					об[iTmrThreshold] = - threshold
+					ря[iTmrId] = 0
+					tmrWasCreated = TRUE
+				}
+				опепбюрэ
+			}
+		}
+	йнмеж
+
+тсмйжхъ TimerControl_DisposeTmr
+	
+	бундмше_оепелеммше
+		мювюкн
+			жек16 tmrId
+		йнмеж
+	
+	бшундмше_оепелеммше
+		мювюкн
+			кнц tmrWasDisposed
+		йнмеж
+	
+	мювюкн
+		tmrWasDisposed = FALSE
+		
+		дкъ iTmrId[1...50],
+			iTmrThreshold[950...999]
+		{
+			еякх (tmrId = iTmrId){
+				еякх (об[iTmrThreshold] # TIMER_IS_NOT_INIT){
+					tmrWasDisposed = TRUE
+					БШЙК ря[iTmrId]
+					ря[iTmrId] = 0
+					об[iTmrThreshold] = TIMER_IS_NOT_INIT
+				}
+				опепбюрэ
+			}
+		}
+	йнмеж
+
+тсмйжхъ TimerControl_StartTmr
+
+	бундмше_оепелеммше
+		мювюкн
+			жек16 tmrId
+		йнмеж
+	
+	бшундмше_оепелеммше
+		мювюкн
+			кнц tmrIsExist
+			кнц tmrWasStopedBeforeStart
+		йнмеж
+		
+	мювюкн
+		tmrIsExist = FALSE
+		tmrWasStopedBeforeStart = FALSE
+		
+		дкъ iTmrId[1...50],
+			iTmrThreshold[950...999]
+		{
+			еякх (tmrId = iTmrId){
+				еякх ((об[iTmrThreshold] # TIMER_IS_NOT_INIT)){
+					tmrIsExist = TRUE
+					еякх (об[iTmrThreshold] < 0){
+						tmrWasStopedBeforeStart = TRUE
+						об[iTmrThreshold] = 0 - об[iTmrThreshold]
+						БЙК ря[iTmrId]
+					}					
+				}
+				опепбюрэ
+			}
+		}	
+	йнмеж
+
+тсмйжхъ TimerControl_StopTmr
+
+	бундмше_оепелеммше
+		мювюкн
+			жек16 tmrId
+		йнмеж
+	
+	бшундмше_оепелеммше
+		мювюкн
+			кнц tmrIsExist
+			кнц tmrWasStartBeforeStoped
+		йнмеж
+		
+	мювюкн
+		tmrIsExist = FALSE
+		tmrWasStartBeforeStoped = FALSE
+		
+		дкъ iTmrId[1...50],
+			iTmrThreshold[950...999]
+		{
+			еякх (tmrId = iTmrId){
+				еякх ((об[iTmrThreshold] # TIMER_IS_NOT_INIT)){
+					tmrIsExist = TRUE
+					еякх (об[iTmrThreshold] > 0){
+						БШЙК ря[iTmrId]
+						tmrWasStartBeforeStoped = TRUE
+						об[iTmrThreshold] = 0 - об[iTmrThreshold]
+					}					
+				}
+				опепбюрэ
+			}
+		}	
+	йнмеж
